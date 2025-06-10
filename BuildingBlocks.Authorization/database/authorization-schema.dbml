@@ -1,0 +1,98 @@
+Table Applications {
+  Id uuid [pk]
+  Code varchar(100) [not null, unique]
+  Name varchar(200) [not null]
+  Description text
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+  RowVersion varbinary
+}
+
+Table Resources {
+  Id uuid [pk]
+  ApplicationId uuid [not null, ref: > Applications.Id]
+  Name varchar(100) [not null]
+  Description text
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+  RowVersion varbinary
+
+  indexes {
+    (ApplicationId, Name) [unique]
+  }
+}
+
+Table Actions {
+  Id uuid [pk]
+  Name varchar(100) [not null, unique]
+  Description text
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+  RowVersion varbinary
+}
+
+Table Permissions {
+  Id uuid [pk]
+  ResourceId uuid [ref: > Resources.Id]
+  ActionId uuid [ref: > Actions.Id]
+  Code varchar(200) [not null, unique]
+  Description text
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+  RowVersion varbinary
+}
+
+Table Roles {
+  Id uuid [pk]
+  Name varchar(100) [not null, unique]
+  Description text
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+  RowVersion varbinary
+}
+
+Table Users {
+  Id uuid [pk]
+  Username varchar(100) [not null, unique]
+  Department varchar(100)
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+  RowVersion varbinary
+}
+
+Table UserRoles {
+  UserId uuid [ref: > Users.Id]
+  RoleId uuid [ref: > Roles.Id]
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+  Note: "Primary Key: (UserId, RoleId)"
+}
+
+Table Workgroups {
+  Id uuid [pk]
+  Name varchar(200) [not null]
+  ParentId uuid [ref: > Workgroups.Id]
+  Description text
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+  RowVersion varbinary
+}
+
+Table UserWorkgroups {
+  UserId uuid [ref: > Users.Id]
+  WorkgroupId uuid [ref: > Workgroups.Id]
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+  Note: "Primary Key: (UserId, WorkgroupId)"
+}
+
+Table SubjectPermissions {
+  Id uuid [pk]
+  SubjectType varchar(50) [not null] // 'User', 'Role', 'Workgroup', 'Role+Workgroup'
+  UserId uuid [ref: > Users.Id]
+  RoleId uuid [ref: > Roles.Id]
+  WorkgroupId uuid [ref: > Workgroups.Id]
+  PermissionId uuid [ref: > Permissions.Id]
+  SystemDate datetime [not null]
+  ModifiedBy varchar(100) [not null]
+}

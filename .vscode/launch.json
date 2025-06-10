@@ -1,0 +1,40 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Start Both APIs",
+      "configurations": [
+        "AuthorizationService",
+        "MoneyTransferService"
+      ]
+    }
+  ],
+  "configurations": [
+    {
+      "name": "AuthorizationService",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/AuthorizationService/bin/Debug/net9.0/AuthorizationService.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/AuthorizationService",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    {
+      "name": "MoneyTransferService",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/MoneyTransferService/bin/Debug/net9.0/MoneyTransferService.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/MoneyTransferService",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  ]
+}

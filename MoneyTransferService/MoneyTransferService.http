@@ -1,0 +1,44 @@
+@MoneyTransferService_HostAddress = http://localhost:5112
+
+### 1. EFT.Create - Role'den yetkili (Operator)
+POST {{MoneyTransferService_HostAddress}}/api/eft
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NTU1NTU1NS01NTU1LTU1NTUtNTU1NS01NTU1NTU1NTU1NTU1NiIsInVzZXJuYW1lIjoib3BlcmF0b3IiLCJyb2xlcyI6WyI0NDQ0NDQ0NC00NDQ0LTQ0NDQtNDQ0NC00NDQ0NDQ0NDQ0NDUiXSwid29ya2dyb3VwcyI6W119.10SNylJeg4q2j01xII6QYPhYIzFN0Nbt-kLUAPVVPQ4
+Content-Type: application/json
+
+{
+  "amount": 1000,
+  "iban": "TR000000000000000000000000"
+}
+
+### 2. EFT.Create - Yetkisiz (Auditor)
+POST {{MoneyTransferService_HostAddress}}/api/eft
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NTU1NTU1NS01NTU1LTU1NTUtNTU1NS01NTU1NTU1NTU1NTciLCJ1c2VybmFtZSI6ImF1ZGl0b3IiLCJyb2xlcyI6WyI0NDQ0NDQ0NC00NDQ0LTQ0NDQtNDQ0NC00NDQ0NDQ0NDQ0NDQ2Il0sIndvcmtncm91cHMiOltdfQ.eeWKvCQna70ugc9FikEOPpS4W_0tCYI4GEVh84OhVFs
+
+Content-Type: application/json
+
+{
+  "amount": 1000,
+  "iban": "TR000000000000000000000000"
+}
+
+### 3. SWIFT.Read - Workgroup'dan yetkili (FinanceGroup)
+GET {{MoneyTransferService_HostAddress}}/api/swift?amount=500&iban=TR111111111111111111111111
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NTU1NTU1NS01NTU1LTU1NTUtNTU1NS01NTU1NTU1NTU1NTU1IiwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGVzIjpbXSwid29ya2dyb3VwcyI6WyI3Nzc3Nzc3Ny03Nzc3LTc3NzctNzc3Ny03Nzc3Nzc3Nzc3NzciXX0.MFzae4r2KP2NE8pHpefL7Gexy_WRT9PDJc8G_Qohyvo
+Content-Type: application/json
+
+
+### 4. Havale.Read - User'dan yetkili (finance1)
+GET {{MoneyTransferService_HostAddress}}/api/havale?amount=200&iban=TR222222222222222222222222
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NTU1NTU1NS01NTU1LTU1NTUtNTU1NS01NTU1NTU1NTU1NTgiLCJ1c2VybmFtZSI6ImZpbmFuY2UxIiwicm9sZXMiOltdLCJhdXRob3JpemF0aW9ucyI6WyJIYXZhbGUuUmVhZCJdLCJ3b3JrZ3JvdXBzIjpbXX0.8XUc8cnAS_fhc48NapN_VZQ41CxY2WmrBteiwcZZhgc
+Content-Type: application/json
+
+
+### 5. SWIFT.Create - RoleWorkgroup'dan yetkili (Admin + AuditGroup)
+POST {{MoneyTransferService_HostAddress}}/api/swift
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NTU1NTU1NS01NTU1LTU1NTUtNTU1NS01NTU1NTU1NTU1NTU1NSIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlcyI6WyI0NDQ0NDQ0NC00NDQ0LTQ0NDQtNDQ0NC00NDQ0NDQ0NDQ0NDQiXSwid29ya2dyb3VwcyI6WyI3Nzc3Nzc3Ny03Nzc3LTc3NzctNzc3Ny03Nzc3Nzc3Nzc3NzkiXX0.aYg6ZJxRVPtOw6NRVe4w5ad3Mt4MTUF4bCNMl-tGY5g
+Content-Type: application/json
+
+{
+  "amount": 3000,
+  "iban": "TR333333333333333333333333"
+}
