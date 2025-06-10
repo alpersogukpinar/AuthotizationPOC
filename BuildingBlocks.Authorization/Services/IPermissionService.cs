@@ -5,6 +5,8 @@ namespace BuildingBlocks.Authorization.Services;
 
 public interface IPermissionService
 {
-    Task<List<PermissionModel>> GetPermissionsAsync(string applicationCode);
-    Task RefreshPermissionsAsync(string applicationCode);
+    Task<List<PermissionModel>> GetPermissionsForApplicationAsync(string applicationCode);
+    Task<UserInfoModel?> GetUserInfoAsync(string username);
+    
+    
 }

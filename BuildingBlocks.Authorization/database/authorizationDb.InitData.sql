@@ -25,7 +25,8 @@ VALUES
   ('33333333-3333-3333-3333-333333333331', 'Create', 'Create operation', GETUTCDATE(), 'seed', 0x),
   ('33333333-3333-3333-3333-333333333332', 'Read', 'Read operation', GETUTCDATE(), 'seed', 0x),
   ('33333333-3333-3333-3333-333333333333', 'Update', 'Update operation', GETUTCDATE(), 'seed', 0x),
-  ('33333333-3333-3333-3333-333333333334', 'Delete', 'Delete operation', GETUTCDATE(), 'seed', 0x);
+  ('33333333-3333-3333-3333-333333333334', 'Delete', 'Delete operation', GETUTCDATE(), 'seed', 0x),
+  ('33333333-3333-3333-3333-3333333333AA', 'All', 'All actions', GETUTCDATE(), 'seed', 0x);
 
 -- Roles
 INSERT INTO dbo.Roles (Id, Name, Description, SystemDate, ModifiedBy, RowVersion)
@@ -73,6 +74,9 @@ VALUES
   ('66666666-6666-6666-6666-666666666662', '22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-333333333332', 'EFT.Read', 'Permission to read EFT', GETUTCDATE(), 'seed', 0x),
   ('66666666-6666-6666-6666-666666666663', '22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-333333333333', 'EFT.Update', 'Permission to update EFT', GETUTCDATE(), 'seed', 0x),
   ('66666666-6666-6666-6666-666666666664', '22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-333333333334', 'EFT.Delete', 'Permission to delete EFT', GETUTCDATE(), 'seed', 0x),
+  -- All actions for EFT
+  ('66666666-6666-6666-6666-6666666666AA', '22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-3333333333AA', 'EFT.All', 'All actions for EFT', GETUTCDATE(), 'seed', 0x),
+
   -- Havale
   ('66666666-6666-6666-6666-666666666665', '22222222-2222-2222-2222-222222222223', '33333333-3333-3333-3333-333333333331', 'Havale.Create', 'Permission to create Havale', GETUTCDATE(), 'seed', 0x),
   ('66666666-6666-6666-6666-666666666666', '22222222-2222-2222-2222-222222222223', '33333333-3333-3333-3333-333333333332', 'Havale.Read', 'Permission to read Havale', GETUTCDATE(), 'seed', 0x),
@@ -93,7 +97,7 @@ VALUES
   ('66666666-6666-6666-6666-666666666682', '22222222-2222-2222-2222-222222222227', '33333333-3333-3333-3333-333333333332', 'BulkTransfer.Read', 'Permission to read BulkTransfer', GETUTCDATE(), 'seed', 0x),
   ('66666666-6666-6666-6666-666666666683', '22222222-2222-2222-2222-222222222227', '33333333-3333-3333-3333-333333333333', 'BulkTransfer.Update', 'Permission to update BulkTransfer', GETUTCDATE(), 'seed', 0x),
   ('66666666-6666-6666-6666-666666666684', '22222222-2222-2222-2222-222222222227', '33333333-3333-3333-3333-333333333334', 'BulkTransfer.Delete', 'Permission to delete BulkTransfer', GETUTCDATE(), 'seed', 0x);
-
+  
 -- SubjectPermissions (örnek: Admin tüm permissionlara sahip, Operator sadece EFT ve Havale işlemlerine sahip, Auditor sadece Read, Finance sadece Create/Update)
 -- Admin: all permissions
 INSERT INTO dbo.SubjectPermissions (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
@@ -138,3 +142,4 @@ VALUES
   (NEWID(), 'RoleWorkgroup', NULL, '44444444-4444-4444-4444-444444444445', '77777777-7777-7777-7777-777777777777', '66666666-6666-6666-6666-666666666671', GETUTCDATE(), 'seed'), -- Operator + FinanceGroup -> FAST.Update
   (NEWID(), 'RoleWorkgroup', NULL, '44444444-4444-4444-4444-444444444447', '77777777-7777-7777-7777-777777777778', '66666666-6666-6666-6666-666666666683', GETUTCDATE(), 'seed'), -- Finance + ITGroup -> BulkTransfer.Update
   (NEWID(), 'RoleWorkgroup', NULL, '44444444-4444-4444-4444-444444444444', '77777777-7777-7777-7777-777777777779', '66666666-6666-6666-6666-666666666673', GETUTCDATE(), 'seed'); -- Admin + AuditGroup -> SWIFT.Create
+

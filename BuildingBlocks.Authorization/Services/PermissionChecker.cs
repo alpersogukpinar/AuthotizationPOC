@@ -17,8 +17,12 @@ public class PermissionChecker : IPermissionChecker
         var roleIds = user.FindAll("role").Select(c => Guid.Parse(c.Value)).ToList();
         var workgroupIds = user.FindAll("workgroup").Select(c => Guid.Parse(c.Value)).ToList();
 
-        var permissions = await _cacheService.GetPermissionsAsync(applicationCode);
-        var permission = permissions.FirstOrDefault(p => p.Code == permissionCode);
+        var permissions = await _cacheService.GetPermissionsForApplicationAsync(applicationCode);
+
+        // .All kodunu da kontrol et
+        var allPermissionCode = permissionCode.Split('.').First() + ".All";
+
+        var permission = permissions.FirstOrDefault(p => p.Code == permissionCode || p.Code == allPermissionCode);
         if (permission == null) return false;
 
         return permission.Subjects.Any(subject =>

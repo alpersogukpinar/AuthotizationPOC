@@ -18,7 +18,16 @@ public class PermissionsController : ControllerBase
     [HttpGet("{applicationCode}")]
     public async Task<ActionResult<List<PermissionModel>>> GetPermissions(string applicationCode)
     {
-        var permissions = await _permissionService.GetPermissionsAsync(applicationCode);
+        var permissions = await _permissionService.GetPermissionsForApplicationAsync(applicationCode);
         return Ok(permissions);
+    }
+
+    [HttpGet("userinfo/{username}")]
+    public async Task<ActionResult<UserInfoModel>> GetUserInfo(string username)
+    {
+        var userInfo = await _permissionService.GetUserInfoAsync(username);
+        if (userInfo == null)
+            return NotFound();
+        return Ok(userInfo);
     }
 }

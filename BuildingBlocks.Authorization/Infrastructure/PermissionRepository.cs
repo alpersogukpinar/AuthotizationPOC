@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using BuildingBlocks.Authorization.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BuildingBlocks.Authorization.Infrastructure;
 
@@ -42,5 +42,33 @@ public class PermissionRepository : IPermissionRepository
         ).ToListAsync();
 
         return permissions;
+    }
+
+    public async Task<UserInfoModel?> GetUserInfoAsync(string username)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        if (user == null)
+            return null;
+
+        var roles = await (
+            from ur in _context.UserRoles
+            join r in _context.Roles on ur.RoleId equals r.Id
+            where ur.UserId == user.Id
+            select r.Name
+        ).ToListAsync();
+
+        var workgroups = await (
+            from uwg in _context.UserWorkgroups
+            join wg in _context.Workgroups on uwg.WorkgroupId equals wg.Id
+            where uwg.UserId == user.Id
+            select wg.Name
+        ).ToListAsync();
+
+        return new UserInfoModel
+        {
+            Username = user.Username,
+            Roles = roles,
+            Workgroups = workgroups
+        };
     }
 }

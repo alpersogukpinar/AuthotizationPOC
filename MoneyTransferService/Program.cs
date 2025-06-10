@@ -19,6 +19,8 @@ builder.Services.AddAuthorizationModule(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
+
+// DUMMY JWT AUTHENTICATION
 builder.Services.AddAuthentication("Fake")
     .AddScheme<AuthenticationSchemeOptions, AlwaysSucceedAuthHandler>("Fake", null);
 

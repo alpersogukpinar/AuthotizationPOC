@@ -6,7 +6,6 @@ using BuildingBlocks.Authorization.Services;
 using BuildingBlocks.Authorization.Helpers;
 using Microsoft.AspNetCore.Http;
 
-
 namespace BuildingBlocks.Authorization.Policies
 {
     public class PermissionsHandler : AuthorizationHandler<PermissionsRequirement>
@@ -24,10 +23,8 @@ namespace BuildingBlocks.Authorization.Policies
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionsRequirement requirement)
         {
-            // Permissionları cache'den al
             var permissions = _permissionCacheService.GetPermissions(_applicationCode);
 
-            // JWT'yi Authorization header'dan al
             var httpContext = _httpContextAccessor.HttpContext;
             var jwt = httpContext?.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             if (string.IsNullOrEmpty(jwt))
@@ -35,9 +32,11 @@ namespace BuildingBlocks.Authorization.Policies
 
             var (userId, username, roles, workgroups) = JwtHelper.ParseClaims(jwt);
 
-            
+            // .All kodunu da kontrol et
+            var allPermissionCode = requirement.PermissionCode.Split('.').First() + ".All";
+
             var hasPermission = permissions.Any(p =>
-                p.Code == requirement.PermissionCode &&
+                (p.Code == requirement.PermissionCode || p.Code == allPermissionCode) &&
                 p.Subjects.Any(s =>
                     (s.SubjectType == "Role" && s.RoleId != null && roles.Contains(s.RoleId.ToString())) ||
                     (s.SubjectType == "User" && s.UserId != null && s.UserId.ToString() == userId) ||

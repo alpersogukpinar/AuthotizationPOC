@@ -12,15 +12,14 @@ public class PermissionService : IPermissionService
         _repository = repository;
     }
 
-    public async Task<List<PermissionModel>> GetPermissionsAsync(string applicationCode)
+    public async Task<List<PermissionModel>> GetPermissionsForApplicationAsync(string applicationCode)
     {
         // Doğrudan veritabanından çek
         return await _repository.GetPermissionsForApplicationAsync(applicationCode);
     }
 
-    public async Task RefreshPermissionsAsync(string applicationCode)
+    public async Task<UserInfoModel?> GetUserInfoAsync(string username)
     {
-        // Cache kullanılmadığı için burada bir işlem yapılmasına gerek yok
-        await Task.CompletedTask;
+        return await _repository.GetUserInfoAsync(username);
     }
 }
