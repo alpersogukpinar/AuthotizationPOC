@@ -16,7 +16,7 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Workgroup> Workgroups { get; set; }
         public DbSet<UserWorkgroup> UserWorkgroups { get; set; }
-        public DbSet<SubjectPermission> SubjectPermissions { get; set; }
+        public DbSet<PermissionAssignment> PermissionAssignments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -84,25 +84,25 @@ namespace BuildingBlocks.Authorization.Infrastructure
                 .WithMany()
                 .HasForeignKey(uwg => uwg.WorkgroupId);
 
-            modelBuilder.Entity<SubjectPermission>()
+            modelBuilder.Entity<PermissionAssignment>()
                 .HasOne<User>()
                 .WithMany()
-                .HasForeignKey(sp => sp.UserId)
+                .HasForeignKey(pa => pa.UserId)
                 .IsRequired(false);
-            modelBuilder.Entity<SubjectPermission>()
+            modelBuilder.Entity<PermissionAssignment>()
                 .HasOne<Role>()
                 .WithMany()
-                .HasForeignKey(sp => sp.RoleId)
+                .HasForeignKey(pa => pa.RoleId)
                 .IsRequired(false);
-            modelBuilder.Entity<SubjectPermission>()
+            modelBuilder.Entity<PermissionAssignment>()
                 .HasOne<Workgroup>()
                 .WithMany()
-                .HasForeignKey(sp => sp.WorkgroupId)
+                .HasForeignKey(pa => pa.WorkgroupId)
                 .IsRequired(false);
-            modelBuilder.Entity<SubjectPermission>()
+            modelBuilder.Entity<PermissionAssignment>()
                 .HasOne<Permission>()
                 .WithMany()
-                .HasForeignKey(sp => sp.PermissionId);
+                .HasForeignKey(pa => pa.PermissionId);
         }
     }
 
@@ -197,7 +197,7 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public string ModifiedBy { get; set; }
     }
 
-    public class SubjectPermission
+    public class PermissionAssignment
     {
         public Guid Id { get; set; }
         public string SubjectType { get; set; }

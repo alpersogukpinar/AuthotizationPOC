@@ -6,5 +6,5 @@ public class PermissionModel
     public string Code { get; set; }
     public string ResourceName { get; set; }
     public string ActionName { get; set; }
-    public List<SubjectAssignment> Subjects { get; set; } = new();
+    public List<PermissionAssignmentModel> PermissionAssignments { get; set; } = new();
 }

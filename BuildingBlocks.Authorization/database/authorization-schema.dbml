@@ -86,9 +86,9 @@ Table UserWorkgroups {
   Note: "Primary Key: (UserId, WorkgroupId)"
 }
 
-Table SubjectPermissions {
+Table PermissionAssignments {
   Id uuid [pk]
-  SubjectType varchar(50) [not null] // 'User', 'Role', 'Workgroup', 'Role+Workgroup'
+  SubjectType varchar(50) [not null] // 'User', 'Role', 'Workgroup', 'RoleWorkgroup'
   UserId uuid [ref: > Users.Id]
   RoleId uuid [ref: > Roles.Id]
   WorkgroupId uuid [ref: > Workgroups.Id]

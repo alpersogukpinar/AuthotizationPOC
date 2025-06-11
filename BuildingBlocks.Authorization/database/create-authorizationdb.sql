@@ -122,3 +122,19 @@ CREATE TABLE SubjectPermissions (
     CONSTRAINT FK_SubjectPermissions_Workgroups FOREIGN KEY (WorkgroupId) REFERENCES Workgroups(Id),
     CONSTRAINT FK_SubjectPermissions_Permissions FOREIGN KEY (PermissionId) REFERENCES Permissions(Id)
 );
+
+-- PermissionAssignments tablosu
+CREATE TABLE PermissionAssignments (
+    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    SubjectType VARCHAR(50) NOT NULL, -- 'User', 'Role', 'Workgroup', 'RoleWorkgroup'
+    UserId UNIQUEIDENTIFIER NULL,
+    RoleId UNIQUEIDENTIFIER NULL,
+    WorkgroupId UNIQUEIDENTIFIER NULL,
+    PermissionId UNIQUEIDENTIFIER NOT NULL,
+    SystemDate DATETIME NOT NULL,
+    ModifiedBy VARCHAR(100) NOT NULL,
+    CONSTRAINT FK_PermissionAssignments_Users FOREIGN KEY (UserId) REFERENCES Users(Id),
+    CONSTRAINT FK_PermissionAssignments_Roles FOREIGN KEY (RoleId) REFERENCES Roles(Id),
+    CONSTRAINT FK_PermissionAssignments_Workgroups FOREIGN KEY (WorkgroupId) REFERENCES Workgroups(Id),
+    CONSTRAINT FK_PermissionAssignments_Permissions FOREIGN KEY (PermissionId) REFERENCES Permissions(Id)
+);

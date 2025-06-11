@@ -17,6 +17,7 @@ builder.Services.AddMemoryCache();
 
 
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
 
 var app = builder.Build();
 

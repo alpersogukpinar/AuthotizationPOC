@@ -14,7 +14,6 @@ public class PermissionRepository : IPermissionRepository
 
     public async Task<List<PermissionModel>> GetPermissionsForApplicationAsync(string applicationCode)
     {
-        // Application, Resource, Action, Permission, SubjectPermission join
         var permissions = await (
             from p in _context.Permissions
             join r in _context.Resources on p.ResourceId equals r.Id
@@ -27,15 +26,15 @@ public class PermissionRepository : IPermissionRepository
                 Code = p.Code,
                 ResourceName = r.Name,
                 ActionName = a.Name,
-                Subjects = (
-                    from sp in _context.SubjectPermissions
-                    where sp.PermissionId == p.Id
-                    select new SubjectAssignment
+                PermissionAssignments = (
+                    from pa in _context.PermissionAssignments
+                    where pa.PermissionId == p.Id
+                    select new PermissionAssignmentModel
                     {
-                        SubjectType = sp.SubjectType,
-                        UserId = sp.UserId,
-                        RoleId = sp.RoleId,
-                        WorkgroupId = sp.WorkgroupId
+                        SubjectType = pa.SubjectType,
+                        UserId = pa.UserId,
+                        RoleId = pa.RoleId,
+                        WorkgroupId = pa.WorkgroupId
                     }
                 ).ToList()
             }

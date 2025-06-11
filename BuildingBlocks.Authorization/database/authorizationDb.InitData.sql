@@ -98,46 +98,46 @@ VALUES
   ('66666666-6666-6666-6666-666666666683', '22222222-2222-2222-2222-222222222227', '33333333-3333-3333-3333-333333333333', 'BulkTransfer.Update', 'Permission to update BulkTransfer', GETUTCDATE(), 'seed', 0x),
   ('66666666-6666-6666-6666-666666666684', '22222222-2222-2222-2222-222222222227', '33333333-3333-3333-3333-333333333334', 'BulkTransfer.Delete', 'Permission to delete BulkTransfer', GETUTCDATE(), 'seed', 0x);
   
--- SubjectPermissions (örnek: Admin tüm permissionlara sahip, Operator sadece EFT ve Havale işlemlerine sahip, Auditor sadece Read, Finance sadece Create/Update)
+-- PermissionAssignments (örnek: Admin tüm permissionlara sahip, Operator sadece EFT ve Havale işlemlerine sahip, Auditor sadece Read, Finance sadece Create/Update)
 -- Admin: all permissions
-INSERT INTO dbo.SubjectPermissions (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
+INSERT INTO dbo.PermissionAssignments (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
 SELECT NEWID(), 'Role', NULL, '44444444-4444-4444-4444-444444444444', NULL, Id, GETUTCDATE(), 'seed'
 FROM dbo.Permissions;
 
 -- Operator: only EFT and Havale permissions (all actions)
-INSERT INTO dbo.SubjectPermissions (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
+INSERT INTO dbo.PermissionAssignments (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
 SELECT NEWID(), 'Role', NULL, '44444444-4444-4444-4444-444444444445', NULL, Id, GETUTCDATE(), 'seed'
 FROM dbo.Permissions
 WHERE Code LIKE 'EFT.%' OR Code LIKE 'Havale.%';
 
 -- Auditor: only Read permissions
-INSERT INTO dbo.SubjectPermissions (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
+INSERT INTO dbo.PermissionAssignments (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
 SELECT NEWID(), 'Role', NULL, '44444444-4444-4444-4444-444444444446', NULL, Id, GETUTCDATE(), 'seed'
 FROM dbo.Permissions
 WHERE Code LIKE '%.Read';
 
 -- Finance: only Create and Update permissions
-INSERT INTO dbo.SubjectPermissions (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
+INSERT INTO dbo.PermissionAssignments (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
 SELECT NEWID(), 'Role', NULL, '44444444-4444-4444-4444-444444444447', NULL, Id, GETUTCDATE(), 'seed'
 FROM dbo.Permissions
 WHERE Code LIKE '%.Create' OR Code LIKE '%.Update';
 
 -- User tipinde: üç farklı kullanıcıya üç farklı permission
-INSERT INTO dbo.SubjectPermissions (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
+INSERT INTO dbo.PermissionAssignments (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
 VALUES 
   (NEWID(), 'User', '55555555-5555-5555-5555-555555555555', NULL, NULL, '66666666-6666-6666-6666-666666666670', GETUTCDATE(), 'seed'), -- admin -> FAST.Read
   (NEWID(), 'User', '55555555-5555-5555-5555-555555555556', NULL, NULL, '66666666-6666-6666-6666-666666666662', GETUTCDATE(), 'seed'), -- operator -> EFT.Read
   (NEWID(), 'User', '55555555-5555-5555-5555-555555555558', NULL, NULL, '66666666-6666-6666-6666-666666666666', GETUTCDATE(), 'seed'); -- finance1 -> Havale.Read
 
 -- Workgroup tipinde: üç farklı workgroup'a üç farklı permission
-INSERT INTO dbo.SubjectPermissions (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
+INSERT INTO dbo.PermissionAssignments (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
 VALUES 
   (NEWID(), 'Workgroup', NULL, NULL, '77777777-7777-7777-7777-777777777777', '66666666-6666-6666-6666-666666666674', GETUTCDATE(), 'seed'), -- FinanceGroup -> SWIFT.Read
   (NEWID(), 'Workgroup', NULL, NULL, '77777777-7777-7777-7777-777777777778', '66666666-6666-6666-6666-666666666682', GETUTCDATE(), 'seed'), -- ITGroup -> BulkTransfer.Read
   (NEWID(), 'Workgroup', NULL, NULL, '77777777-7777-7777-7777-777777777779', '66666666-6666-6666-6666-666666666666', GETUTCDATE(), 'seed'); -- AuditGroup -> Havale.Read
 
 -- RoleWorkgroup tipinde: üç farklı kombinasyona üç farklı permission
-INSERT INTO dbo.SubjectPermissions (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
+INSERT INTO dbo.PermissionAssignments (Id, SubjectType, UserId, RoleId, WorkgroupId, PermissionId, SystemDate, ModifiedBy)
 VALUES 
   (NEWID(), 'RoleWorkgroup', NULL, '44444444-4444-4444-4444-444444444445', '77777777-7777-7777-7777-777777777777', '66666666-6666-6666-6666-666666666671', GETUTCDATE(), 'seed'), -- Operator + FinanceGroup -> FAST.Update
   (NEWID(), 'RoleWorkgroup', NULL, '44444444-4444-4444-4444-444444444447', '77777777-7777-7777-7777-777777777778', '66666666-6666-6666-6666-666666666683', GETUTCDATE(), 'seed'), -- Finance + ITGroup -> BulkTransfer.Update
