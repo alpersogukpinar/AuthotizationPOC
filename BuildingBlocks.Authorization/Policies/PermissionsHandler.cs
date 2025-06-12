@@ -38,10 +38,10 @@ namespace BuildingBlocks.Authorization.Policies
             var hasPermission = permissions.Any(p =>
                 (p.Code == requirement.PermissionCode || p.Code == allPermissionCode) &&
                 p.PermissionAssignments.Any(s =>
-                    (s.SubjectType == "Role" && s.RoleId != null && roles.Contains(s.RoleId.ToString())) ||
-                    (s.SubjectType == "User" && s.UserId != null && s.UserId.ToString() == userId) ||
-                    (s.SubjectType == "Workgroup" && s.WorkgroupId != null && workgroups.Contains(s.WorkgroupId.ToString())) ||
-                    (s.SubjectType == "RoleWorkgroup" && s.RoleId != null && s.WorkgroupId != null &&
+                    (s.AssignmentType == "Role" && s.RoleId != null && roles.Contains(s.RoleId.ToString())) ||
+                    (s.AssignmentType == "User" && s.UserId != null && s.UserId.ToString() == userId) ||
+                    (s.AssignmentType == "Workgroup" && s.WorkgroupId != null && workgroups.Contains(s.WorkgroupId.ToString())) ||
+                    (s.AssignmentType == "RoleWorkgroup" && s.RoleId != null && s.WorkgroupId != null &&
                         roles.Contains(s.RoleId.ToString()) && workgroups.Contains(s.WorkgroupId.ToString()))
                 )
             );

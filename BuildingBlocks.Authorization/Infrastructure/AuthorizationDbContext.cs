@@ -112,9 +112,13 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class Resource
@@ -123,9 +127,13 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public Guid ApplicationId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class ActionEntity
@@ -133,9 +141,13 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class Permission
@@ -145,9 +157,13 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public Guid ActionId { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class Role
@@ -155,27 +171,42 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class User
     {
         public Guid Id { get; set; }
         public string Username { get; set; }
+        public string UserType { get; set; }
         public string Department { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
+        public string ExternalId { get; set; }
+        public string BranchCode { get; set; }
+        public string CustomerNo { get; set; }
     }
 
     public class UserRole
     {
         public Guid UserId { get; set; }
         public Guid RoleId { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class Workgroup
@@ -184,28 +215,41 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public string Name { get; set; }
         public Guid? ParentId { get; set; }
         public string Description { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public byte[] RowVersion { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class UserWorkgroup
     {
         public Guid UserId { get; set; }
         public Guid WorkgroupId { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class PermissionAssignment
     {
         public Guid Id { get; set; }
-        public string SubjectType { get; set; }
+        public string AssignmentType { get; set; }
         public Guid? UserId { get; set; }
         public Guid? RoleId { get; set; }
         public Guid? WorkgroupId { get; set; }
         public Guid PermissionId { get; set; }
-        public DateTime SystemDate { get; set; }
+        public DateTime? ValidFrom { get; set; }
+        public DateTime? ValidTo { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

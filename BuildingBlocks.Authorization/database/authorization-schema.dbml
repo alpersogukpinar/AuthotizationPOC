@@ -3,9 +3,13 @@ Table Applications {
   Code varchar(100) [not null, unique]
   Name varchar(200) [not null]
   Description text
-  SystemDate datetime [not null]
+  CreatedDate datetime [not null] // Kayıt oluşturulma tarihi
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime // Son güncellenme tarihi (null ise hiç güncellenmemiştir)
   ModifiedBy varchar(100) [not null]
   RowVersion varbinary
+  IsActive bool [not null, default: true]
+  IsDeleted bool [not null, default: false]
 }
 
 Table Resources {
@@ -13,12 +17,17 @@ Table Resources {
   ApplicationId uuid [not null, ref: > Applications.Id]
   Name varchar(100) [not null]
   Description text
-  SystemDate datetime [not null]
+  CreatedDate datetime [not null]
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime
   ModifiedBy varchar(100) [not null]
   RowVersion varbinary
+  IsActive bool [not null, default: true]
+  IsDeleted bool [not null, default: false]
 
   indexes {
     (ApplicationId, Name) [unique]
+    ApplicationId // Bir uygulamanın tüm kaynaklarını hızlıca çekmek için
   }
 }
 
@@ -26,9 +35,13 @@ Table Actions {
   Id uuid [pk]
   Name varchar(100) [not null, unique]
   Description text
-  SystemDate datetime [not null]
+  CreatedDate datetime [not null]
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime
   ModifiedBy varchar(100) [not null]
   RowVersion varbinary
+  IsActive bool [not null, default: true] //ilgili actionı pasife çekmek için
+  IsDeleted bool [not null, default: false]
 }
 
 Table Permissions {
@@ -37,35 +50,43 @@ Table Permissions {
   ActionId uuid [ref: > Actions.Id]
   Code varchar(200) [not null, unique]
   Description text
-  SystemDate datetime [not null]
+  CreatedDate datetime [not null]
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime
   ModifiedBy varchar(100) [not null]
   RowVersion varbinary
+  IsActive bool [not null, default: true] //ilgili yetkiyi pasife çekmek için
+  IsDeleted bool [not null, default: false]
 }
 
 Table Roles {
   Id uuid [pk]
   Name varchar(100) [not null, unique]
   Description text
-  SystemDate datetime [not null]
+  CreatedDate datetime [not null]
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime
   ModifiedBy varchar(100) [not null]
   RowVersion varbinary
+  IsActive bool [not null, default: true] //Role silinmiyor ama belirli bir nedenle pasife çekiliyor
+  IsDeleted bool [not null, default: false]
 }
 
 Table Users {
   Id uuid [pk]
   Username varchar(100) [not null, unique]
+  UserType varchar(50) [not null] // 'Internal (iç kullanıcı)', 'External (dış kullanıcı)', 'Servis kullanıcısı'
   Department varchar(100)
-  SystemDate datetime [not null]
+  CreatedDate datetime [not null]
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime
   ModifiedBy varchar(100) [not null]
   RowVersion varbinary
-}
-
-Table UserRoles {
-  UserId uuid [ref: > Users.Id]
-  RoleId uuid [ref: > Roles.Id]
-  SystemDate datetime [not null]
-  ModifiedBy varchar(100) [not null]
-  Note: "Primary Key: (UserId, RoleId)"
+  IsActive bool [not null, default: true] //Kullanıcı silinmiyor ama belirli bir nedenle pasife çekiliyor
+  IsDeleted bool [not null, default: false]
+  ExternalId varchar(100) //Dış sistemlerdeki kullanıcı referansı varsa
+  BranchCode varchar(20) //Personel için şube kodu opsiyonel
+  CustomerNo varchar(20) //Aynı zamanda banka müşterisi ise müşteri kodu(opsiyonel)
 }
 
 Table Workgroups {
@@ -73,26 +94,73 @@ Table Workgroups {
   Name varchar(200) [not null]
   ParentId uuid [ref: > Workgroups.Id]
   Description text
-  SystemDate datetime [not null]
+  CreatedDate datetime [not null]
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime
   ModifiedBy varchar(100) [not null]
   RowVersion varbinary
+  IsActive bool [not null, default: true]
+  IsDeleted bool [not null, default: false]
+
+  indexes {
+    ParentId // Hiyerarşik sorgular için (alt grupları bulmak için)
+  }
+}
+
+Table UserRoles {
+  UserId uuid [ref: > Users.Id]
+  RoleId uuid [ref: > Roles.Id]
+  CreatedDate datetime [not null]
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime
+  ModifiedBy varchar(100) [not null]
+  IsDeleted bool [not null, default: false]
+  Note: "Primary Key: (UserId, RoleId)"
+
+  indexes {
+    RoleId // Bir role atanmış tüm kullanıcıları hızlıca bulmak için
+  }
 }
 
 Table UserWorkgroups {
   UserId uuid [ref: > Users.Id]
   WorkgroupId uuid [ref: > Workgroups.Id]
-  SystemDate datetime [not null]
+  CreatedDate datetime [not null]
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime
   ModifiedBy varchar(100) [not null]
+  IsDeleted bool [not null, default: false]
   Note: "Primary Key: (UserId, WorkgroupId)"
+
+  indexes {
+    WorkgroupId // Bir gruba atanmış tüm kullanıcıları hızlıca bulmak için
+  }
 }
 
 Table PermissionAssignments {
   Id uuid [pk]
-  SubjectType varchar(50) [not null] // 'User', 'Role', 'Workgroup', 'RoleWorkgroup'
-  UserId uuid [ref: > Users.Id]
-  RoleId uuid [ref: > Roles.Id]
-  WorkgroupId uuid [ref: > Workgroups.Id]
-  PermissionId uuid [ref: > Permissions.Id]
-  SystemDate datetime [not null]
-  ModifiedBy varchar(100) [not null]
+  AssignmentType varchar(50) [not null] // 'User', 'Role', 'Workgroup', 'RoleWorkgroup'
+  UserId uuid [ref: > Users.Id] // Atama kullanıcıya ise dolu, değilse null
+  RoleId uuid [ref: > Roles.Id] // Atama role veya Role+Workgroup ise dolu, değilse null
+  WorkgroupId uuid [ref: > Workgroups.Id] // Atama workgroup'a veya Role+Workgroup ise dolu, değilse null
+  PermissionId uuid [ref: > Permissions.Id] // Atanan yetki
+  ValidFrom datetime // Yetkinin geçerli olmaya başladığı tarih (geçici atama için kullanılır, null ise hemen geçerli)
+  ValidTo datetime // Yetkinin geçerli olmayı bitirdiği tarih (geçici atama için kullanılır, null ise süresiz)
+  IsActive bool [not null, default: true] // Atama aktif mi? Geçici olarak devre dışı bırakmak için kullanılır
+  CreatedDate datetime [not null]
+  CreatedBy varchar(100) [not null]
+  UpdatedDate datetime
+  ModifiedBy varchar(100) [not null] // Kaydı oluşturan veya değiştiren kullanıcı
+  IsDeleted bool [not null, default: false] // Soft delete için, silinmişse true
+
+  indexes {
+    UserId        // Kullanıcıya atanmış izinleri hızlıca bulmak için
+    RoleId        // Role atanmış izinleri hızlıca bulmak için
+    WorkgroupId   // Workgroup'a atanmış izinleri hızlıca bulmak için
+    PermissionId  // Belirli bir iznin kimlere atandığını bulmak için
+    (UserId, IsActive, IsDeleted) // Kullanıcıya atanmış aktif izinleri hızlıca bulmak için (bileşik index)
+    (RoleId, IsActive, IsDeleted) // Role atanmış aktif izinler için (bileşik index)
+    (RoleId, WorkgroupId) // Role+Workgroup kombinasyonuna atanmış izinleri hızlıca bulmak için
+    (RoleId, WorkgroupId, IsActive, IsDeleted) // Aktif/silinmemiş Role+Workgroup atamalarını hızlıca bulmak için
+  }
 }
