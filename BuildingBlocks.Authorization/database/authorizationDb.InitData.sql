@@ -55,14 +55,17 @@ VALUES
 -- Workgroups
 INSERT INTO dbo.Workgroups (Id, Name, ParentId, Description, CreatedDate, CreatedBy, UpdatedDate, ModifiedBy, RowVersion, IsActive, IsDeleted)
 VALUES
-  ('77777777-7777-7777-7777-777777777777', 'FinanceGroup', NULL, 'Finance Workgroup', GETUTCDATE(), 'seed', NULL, 'seed', 0x, 1, 0),
-  ('77777777-7777-7777-7777-777777777778', 'ITGroup', NULL, 'IT Workgroup', GETUTCDATE(), 'seed', NULL, 'seed', 0x, 1, 0),
-  ('77777777-7777-7777-7777-777777777779', 'AuditGroup', NULL, 'Audit Workgroup', GETUTCDATE(), 'seed', NULL, 'seed', 0x, 1, 0);
+  ('77777777-7777-7777-7777-777777777777', 'FinanceGroup', '88888888-8888-8888-8888-888888888888', 'Finance Workgroup', GETUTCDATE(), 'seed', NULL, 'seed', 0x, 1, 0),
+  ('77777777-7777-7777-7777-777777777778', 'ITGroup', '88888888-8888-8888-8888-888888888888', 'IT Workgroup', GETUTCDATE(), 'seed', NULL, 'seed', 0x, 1, 0),
+  ('77777777-7777-7777-7777-777777777779', 'AuditGroup', '88888888-8888-8888-8888-888888888888', 'Audit Workgroup', GETUTCDATE(), 'seed', NULL, 'seed', 0x, 1, 0),
+  ('77777777-7777-7777-7777-777777777780', 'AdminsGroup', '77777777-7777-7777-7777-777777777778', 'Audit Workgroup', GETUTCDATE(), 'seed', NULL, 'seed', 0x, 1, 0),
+  ('88888888-8888-8888-8888-888888888888', 'EmployeeGroup', NULL, 'All bank employees', GETUTCDATE(), 'seed', NULL, 'seed', 0x, 1, 0);
+
 
 -- UserWorkgroups
 INSERT INTO dbo.UserWorkgroups (UserId, WorkgroupId, CreatedDate, CreatedBy, UpdatedDate, ModifiedBy, IsDeleted)
 VALUES
-  ('55555555-5555-5555-5555-555555555555', '77777777-7777-7777-7777-777777777778', GETUTCDATE(), 'seed', NULL, 'seed', 0),
+  ('55555555-5555-5555-5555-555555555555', '77777777-7777-7777-7777-777777777780', GETUTCDATE(), 'seed', NULL, 'seed', 0),
   ('55555555-5555-5555-5555-555555555558', '77777777-7777-7777-7777-777777777777', GETUTCDATE(), 'seed', NULL, 'seed', 0),
   ('55555555-5555-5555-5555-555555555557', '77777777-7777-7777-7777-777777777779', GETUTCDATE(), 'seed', NULL, 'seed', 0);
 

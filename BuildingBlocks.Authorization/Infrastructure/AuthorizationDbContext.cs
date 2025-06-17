@@ -185,7 +185,7 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public Guid Id { get; set; }
         public string Username { get; set; }
         public string UserType { get; set; }
-        public string Department { get; set; }
+        public string? Department { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
@@ -193,9 +193,9 @@ namespace BuildingBlocks.Authorization.Infrastructure
         public byte[] RowVersion { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public string ExternalId { get; set; }
-        public string BranchCode { get; set; }
-        public string CustomerNo { get; set; }
+        public string? ExternalId { get; set; }
+        public string? BranchCode { get; set; }
+        public string? CustomerNo { get; set; }
     }
 
     public class UserRole

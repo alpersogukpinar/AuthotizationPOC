@@ -14,12 +14,21 @@ public class PermissionService : IPermissionService
 
     public async Task<List<PermissionModel>> GetPermissionsForApplicationAsync(string applicationCode)
     {
-        // Doğrudan veritabanından çek
         return await _repository.GetPermissionsForApplicationAsync(applicationCode);
     }
 
-    public async Task<UserInfoModel?> GetUserInfoAsync(string username)
+    public async Task<UserInfoModel?> GetUserInfoAsync(Guid userId)
     {
-        return await _repository.GetUserInfoAsync(username);
+        return await _repository.GetUserInfoAsync(userId);
+    }
+
+    public async Task<List<string>> GetUserRoleNamesAsync(Guid userId)
+    {
+        return await _repository.GetUserRoleNamesAsync(userId);
+    }
+
+    public async Task<List<Workgroup>> GetUserWorkgroupsAsync(Guid userId)
+    {
+        return await _repository.GetUserWorkgroupsAsync(userId);
     }
 }
