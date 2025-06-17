@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BuildingBlocks.Authorization.Services;
 using BuildingBlocks.Authorization.Models;
+using BuildingBlocks.Authorization.Infrastructure;
 
 namespace AuthorizationService.Controllers;
 
@@ -33,7 +34,7 @@ public class PermissionsController : ControllerBase
 
     // Kullanıcının rollerini döner
     [HttpGet("roles/{userId:guid}")]
-    public async Task<ActionResult<List<string>>> GetUserRoles(Guid userId)
+    public async Task<ActionResult<List<string>>> GetUserRoleNames(Guid userId)
     {
         var roles = await _permissionService.GetUserRoleNamesAsync(userId);
         if (roles == null)
@@ -43,7 +44,7 @@ public class PermissionsController : ControllerBase
 
     // Kullanıcının workgroup'larını döner
     [HttpGet("workgroups/{userId:guid}")]
-    public async Task<ActionResult<List<string>>> GetUserWorkgroups(Guid userId)
+    public async Task<ActionResult<List<UserWorkgroup>>> GetUserWorkgroups(Guid userId)
     {
         var workgroups = await _permissionService.GetUserWorkgroupsAsync(userId);
         if (workgroups == null)
